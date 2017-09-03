@@ -136,7 +136,7 @@ contract ShopFront is Stoppable,  Administrated
     }
 
     function setAdministrator(address a)
-    public
+    OnlyForOwner
     {
         administrator = a;
     }
