@@ -1,0 +1,79 @@
+var shopFrontControllers = angular.module("shopFrontControllers", ["shopFrontServices"]);
+
+shopFrontControllers.controller("ShopFrontMainCtrl", 
+  [ '$scope', '$location', '$http', '$q', '$window', '$timeout', 'productService',  
+  ($scope, $location, $http, $q, $window, $timeout, productService) =>{
+
+    $scope.newProductLog = productService.getProducts();
+  }]);
+
+shopFrontControllers.controller("ShopFrontManageAccountCtrl",
+  [ '$scope', '$location', '$http', '$q', '$window', '$timeout',   
+  ($scope, $location, $http, $q, $window, $timeout) => {
+
+  var shopFront;
+  
+  ShopFront.deployed().then((instance)=>{ 
+      shopFront = instance; 
+    });
+
+  $scope.accounts = [];
+
+  web3.eth.getAccounts((err, res) => {
+    if (err) {
+      console.log("There was an issue getting the list of accounts");
+    }
+    else
+    {
+      $scope.accounts = res;
+      $scope.$apply();
+    }
+  });
+
+  $scope.adminChanged = (() => {
+      shopFront.setAdministrator($scope.administrator, {from:$scope.accounts[0]});
+    });
+}]);
+
+shopFrontControllers.controller("ShopFrontAdminCtrl", 
+  [ '$scope', '$location', '$http', '$q', '$window', '$timeout', 'productService', 
+  ($scope, $location, $http, $q, $window, $timeout, productService) =>{
+
+    $scope.newProductLog = productService.getProducts();
+
+    var shopFront;
+
+    ShopFront.deployed().then((instance)=>{
+      shopFront = instance;
+    }).then(()=> {
+      return shopFront.administrator.call();
+    }).then((a) => {
+      $scope.administrator = a;
+      return shopFront.owner.call();
+    }).then((o) => {
+      $scope.owner = o;
+      $scope.$apply();
+    });
+
+    $scope.addProduct = (()=>{
+      
+      var tmpProductId = parseInt($scope.newProductId);
+      var tmpProductStock = parseInt($scope.newProductStock);
+      var tmpProductPrice = web3.toWei(parseInt($scope.newProductPrice), "ether");
+      var tmpAdminAdress = $scope.administrator.toString();
+
+      $scope.newProductId = "";
+      $scope.newProductStock = "";
+      $scope.newProductPrice = "";
+
+      shopFront.addNewProduct(tmpProductId, tmpProductStock, tmpProductPrice, {from:$scope.administrator, gas:900000})
+      .then((trans) =>{
+        console.log("Transaction Receipt: ", trans);
+      });
+      $scope.$apply();
+    });
+  }
+  ]);
+
+
+

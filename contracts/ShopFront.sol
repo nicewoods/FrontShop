@@ -22,11 +22,12 @@ contract ShopFront is Stoppable,  Administrated
     mapping(uint => ProductStruct) public products;
     
     event LogBuy(address, uint);
-    event LogNewProduct(address, uint, uint, uint);
+    event LogNewProduct(address sender, uint reference, uint stock, uint price);
     event LogPriceUpdate(address, uint, uint, uint) ;
     event LogAddStock(address, uint, uint, uint); 
     event LogRetrieval(address, uint);    
     event LogAddCredit(address, uint);    
+    event LogAdminChanged(address oldAdministrator, address administrator);    
 
     function ShopFront(address administrator) 
     {
@@ -138,7 +139,9 @@ contract ShopFront is Stoppable,  Administrated
     function setAdministrator(address a)
     OnlyForOwner
     {
+        address oldAdmin = administrator;
         administrator = a;
+        LogAdminChanged(oldAdmin, a);
     }
 
 }

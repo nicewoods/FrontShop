@@ -1,0 +1,32 @@
+<div ng-cloak ng-controller="shopFrontMainCtrl">
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Front Shop</h1> 
+      <p>This is a shop where you can safely buy products because everything is recoreded on the Ethereum blockchain.</p> 
+    </div>
+  </div>
+  <p>All you need is an Ethereum account with enough funds.</p> 
+  <div class="panel panel-default">
+    <div class="panel-body">
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Product Id</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="product in newProductLog">              
+            <th>{{product.productId}}</th>
+            <th>{{product.productPrice}}</th>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <a href="/buy">Buy&nbsp;&nbsp;</a>
+  <a href="/admin">Admin&nbsp;&nbsp;</a>
+  <a href="/manageAccount">Manage Account</a>
+</div>

@@ -1,0 +1,18 @@
+<div ng-cloak ng-controller="shopFrontManageAccountCtrl">
+
+	<div id="manageaccounts" style=" margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+	<p>View Account Balance, credit or debit the account.</p> 
+	<p>Assign access rights.</p> 
+	<div style=" margin-top:50px">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+              <div class="panel-title">Change Administrator</div>
+          </div>  
+          <div class="panel-body" >
+                <label for="Administrator">Administrator</label>
+				<select name ="Administrator" class="form-control" ng-change="adminChanged()" ng-model="administrator" ng-options="account for account in accounts" ng-selected="administrator" required/>
+          </div>
+        </div>
+    </div>    
+	<a href="/">Back to main page</a>	
+</div>
